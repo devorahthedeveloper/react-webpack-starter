@@ -16,6 +16,9 @@ const commonConfig = merge([
     },
     output: {
       path: PATHS.build,
+      publicPath: 'http://localhost:3000/',
+      // need this for enabling sourceMaps
+      // TODO: of course, this needs to be dev/prod aware
       filename: '[name].js',
     },
     plugins: [

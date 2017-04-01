@@ -28,28 +28,36 @@ exports.lintJavaScript = ({ include, exclude, options } = {}) => ({
   },
 });
 
+const CSS_LOADER = {
+  loader: 'css-loader', // enables CSS modules / loads CSS via import and returns CSS code
+  options: {
+    modules: true,
+    sourceMap: true,
+    localIdentName: '[name]_[local]_[hash:base64:5]', // specifies the format of the output styles
+    // -autoPrefixer      // ?
+    // importLoaders: 1,  // ?do we actually need this?
+  },
+};
+
+const SASS_LOADER = {
+  loader: 'sass-loader',
+  options: {
+    sourceMap: true,
+  },
+};
+
 exports.loadCSS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
         test: /\.scss$/,
+        use: [
+          { loader: 'style-loader' }, // loads imported CSS and injects into document via <link> tag
+          CSS_LOADER,
+          SASS_LOADER,
+        ],
         include,
         exclude,
-        use: [
-          {
-            loader: 'style-loader', // creates style nodes from JS strings
-          },
-          {
-            loader: 'css-loader', // translates CSS into CommonJS
-            options: {
-              modules: true,
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: 'sass-loader?sourceMap', // compiles Sass to CSS
-          },
-        ],
       },
     ],
   },
@@ -59,7 +67,7 @@ exports.transpileJSX = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         include,
         exclude,
         loader: 'babel-loader',
@@ -68,26 +76,24 @@ exports.transpileJSX = ({ include, exclude } = {}) => ({
   },
 });
 
-exports.extractCSS = ({ include, exclude } = {}) => {
-  // Output extracted CSS to a file
-  const pluginInstance = new ExtractTextPlugin({
-    filename: '[name].[contenthash:8].css',
-  });
-
-  return {
-    module: {
-      rules: [
-        {
-          test: /\.scss$/,
-          include,
-          exclude,
-          use: pluginInstance.extract({
-            fallback: 'style-loader',
-            use: ['css-loader', 'sass-loader'],
-          }),
-        },
-      ],
-    },
-    plugins: [pluginInstance],
-  };
-};
+exports.extractCSS = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: [CSS_LOADER, SASS_LOADER],
+          fallback: 'style-loader',
+        }),
+        include,
+        exclude,
+      },
+    ],
+  },
+  plugins: [
+    // Output extracted CSS to a file
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash:8].css',
+    }),
+  ],
+});
