@@ -45,7 +45,7 @@ exports.lintJavaScript = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         enforce: 'pre',
         loader: 'eslint-loader',
         include,
@@ -88,6 +88,10 @@ exports.transpileJSX = ({ include, exclude } = {}) => ({
         include,
         exclude,
         loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015'],
+        },
       },
     ],
   },

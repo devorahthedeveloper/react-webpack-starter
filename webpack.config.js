@@ -30,7 +30,7 @@ const commonConfig = merge([
   },
   parts.lintJavaScript({ include: PATHS.app }),
   parts.lintCSS({ files: glob.sync(`${PATHS.app}/**/*.scss`) }),
-  parts.transpileJSX({ exclude: /node_modules/ }),
+  parts.transpileJSX({ include: PATHS.app, exclude: /node_modules/ }),
 ]);
 
 const developmentConfig = merge([
