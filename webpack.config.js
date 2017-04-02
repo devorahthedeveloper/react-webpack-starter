@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
+const glob = require('glob');
 
 const parts = require('./webpack.parts');
 
@@ -28,6 +29,7 @@ const commonConfig = merge([
     ],
   },
   parts.lintJavaScript({ include: PATHS.app }),
+  parts.lintCSS({ files: glob.sync(`${PATHS.app}/**/*.scss`) }),
   parts.transpileJSX({ exclude: /node_modules/ }),
 ]);
 

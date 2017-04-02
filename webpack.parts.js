@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -27,6 +28,12 @@ exports.lintJavaScript = ({ include, exclude, options } = {}) => ({
       },
     ],
   },
+});
+
+exports.lintCSS = () => ({
+  plugins: [
+    new StyleLintPlugin(),
+  ],
 });
 
 const CSS_LOADER = {
