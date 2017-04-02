@@ -4,6 +4,8 @@ const merge = require('webpack-merge');
 
 const parts = require('./webpack.parts');
 
+const PORT = process.env.port || 8080;
+
 const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
@@ -16,7 +18,7 @@ const commonConfig = merge([
     },
     output: {
       path: PATHS.build,
-      publicPath: 'http://localhost:8080/',
+      publicPath: '/',
       // need this for enabling sourceMaps
       // TODO: of course, this needs to be dev/prod aware
       filename: '[name].js',
@@ -32,7 +34,7 @@ const commonConfig = merge([
 const developmentConfig = merge([
   parts.devServer({
     host: process.env.HOST,
-    port: process.env.PORT,
+    port: PORT,
   }),
   parts.loadCSS(),
 ]);
