@@ -2,6 +2,32 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
+const CSS_LOADER = {
+  loader: 'css-loader', // enables CSS modules / loads CSS via import and returns CSS code
+  options: {
+    modules: true,
+    sourceMap: true,
+    localIdentName: '[name]_[local]_[hash:base64:5]', // specifies the format of the output styles
+    // importLoaders: 1,  // ?do we actually need this?
+  },
+};
+
+const SASS_LOADER = {
+  loader: 'sass-loader',
+  options: {
+    sourceMap: true,
+  },
+};
+
+const AUTOPREFIXER = {
+  loader: 'postcss-loader',
+  options: {
+    plugins: () => ([
+      autoprefixer,
+    ]),
+  },
+};
+
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
     historyApiFallback: true,
@@ -35,33 +61,6 @@ exports.lintCSS = () => ({
     new StyleLintPlugin(),
   ],
 });
-
-const CSS_LOADER = {
-  loader: 'css-loader', // enables CSS modules / loads CSS via import and returns CSS code
-  options: {
-    modules: true,
-    sourceMap: true,
-    localIdentName: '[name]_[local]_[hash:base64:5]', // specifies the format of the output styles
-    // -autoPrefixer      // ?
-    // importLoaders: 1,  // ?do we actually need this?
-  },
-};
-
-const SASS_LOADER = {
-  loader: 'sass-loader',
-  options: {
-    sourceMap: true,
-  },
-};
-
-const AUTOPREFIXER = {
-  loader: 'postcss-loader',
-  options: {
-    plugins: () => ([
-      autoprefixer,
-    ]),
-  },
-};
 
 exports.loadCSS = ({ include, exclude } = {}) => ({
   module: {
