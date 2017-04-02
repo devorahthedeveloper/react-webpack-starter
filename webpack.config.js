@@ -29,16 +29,16 @@ const commonConfig = merge([
   parts.transpileJSX({ exclude: /node_modules/ }),
 ]);
 
-const productionConfig = merge([
-  parts.extractCSS(),
-]);
-
 const developmentConfig = merge([
   parts.devServer({
     host: process.env.HOST,
     port: process.env.PORT,
   }),
   parts.loadCSS(),
+]);
+
+const productionConfig = merge([
+  parts.extractCSS(),
 ]);
 
 module.exports = (env) => {
