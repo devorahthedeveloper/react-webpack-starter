@@ -1,4 +1,5 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -46,6 +47,15 @@ const SASS_LOADER = {
   },
 };
 
+const AUTOPREFIXER = {
+  loader: 'postcss-loader',
+  options: {
+    plugins: () => ([
+      autoprefixer,
+    ]),
+  },
+};
+
 exports.loadCSS = ({ include, exclude } = {}) => ({
   module: {
     rules: [
@@ -55,6 +65,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
           { loader: 'style-loader' }, // loads imported CSS and injects into document via <link> tag
           CSS_LOADER,
           SASS_LOADER,
+          AUTOPREFIXER,
         ],
         include,
         exclude,
@@ -82,7 +93,11 @@ exports.extractCSS = ({ include, exclude } = {}) => ({
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-          use: [CSS_LOADER, SASS_LOADER],
+          use: [
+            CSS_LOADER,
+            SASS_LOADER,
+            AUTOPREFIXER,
+          ],
           fallback: 'style-loader',
         }),
         include,
