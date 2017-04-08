@@ -5,3 +5,4 @@ To do or look into:
 - Critical path rendering (isomorphic-style-loader, critical-path-css-tools)
 - SVG loading
 - Optimizing images
+- Loading fonts

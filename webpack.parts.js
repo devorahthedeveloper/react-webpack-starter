@@ -80,7 +80,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
-exports.transpileJSX = ({ include, exclude } = {}) => ({
+exports.loadJSX = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
