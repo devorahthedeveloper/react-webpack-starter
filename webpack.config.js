@@ -42,6 +42,7 @@ const developmentConfig = merge([
 
 const productionConfig = merge([
   parts.extractCSS(),
+  parts.loadImages(),
 ]);
 
 module.exports = (env) => {

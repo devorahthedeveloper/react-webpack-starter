@@ -122,3 +122,22 @@ exports.extractCSS = ({ include, exclude } = {}) => ({
     }),
   ],
 });
+
+exports.loadImages = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|svg)$/,
+        include,
+        exclude,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 15000,
+            name: '/public/images/[name].[ext]',
+          },
+        },
+      },
+    ],
+  },
+});
